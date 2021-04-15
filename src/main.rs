@@ -1,6 +1,7 @@
 mod parser;
 mod pair;
 mod common;
+mod pred;
 
 use crate::common::Parser;
 

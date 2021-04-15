@@ -94,6 +94,12 @@ fn test_right() {
 }
 
 #[test]
+fn test_zero_or_more() {
+  let zero_fn = right(match_literal("<"), identifier);
+  println!("result is {:?}", zero_fn.parse(r#"<single-element attribute="value" />"#));
+}
+
+#[test]
 fn test_map() {
   let map_fn = map(pair(match_literal("<"), identifier), |(_, r2)| (r2));
   assert_eq!(
