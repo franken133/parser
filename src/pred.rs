@@ -10,7 +10,7 @@ fn any_char(input: &str) -> ParseResult<char> {
 fn pred<'a, P, A, F>(p: P, f: F) -> impl Parser<'a, A>
     where P: Parser<'a, A>,
           F: Fn(&A) -> bool {
-    |input| {
+    move |input| {
         match p.parse(input) {
             Ok((s, r)) => {
                 if f(&r) {
