@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 use crate::common::{ParseResult, Parser};
+=======
+use crate::common::ParseResult;
+>>>>>>> main
 
 fn any_char(input: &str) -> ParseResult<char> {
     match input.chars().next() {
@@ -7,6 +11,7 @@ fn any_char(input: &str) -> ParseResult<char> {
     }
 }
 
+<<<<<<< HEAD
 fn pred<'a, P, A, F>(p: P, f: F) -> impl Parser<'a, A>
     where P: Parser<'a, A>,
           F: Fn(&A) -> bool {
@@ -23,6 +28,8 @@ fn pred<'a, P, A, F>(p: P, f: F) -> impl Parser<'a, A>
     }
 }
 
+=======
+>>>>>>> main
 #[test]
 fn test_any_char() {
     let result = any_char("1osa");
