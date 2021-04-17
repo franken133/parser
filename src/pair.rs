@@ -1,7 +1,7 @@
 use crate::common::*;
 use crate::parser::{identifier, match_literal};
 
-fn pair<'a, P1, P2, R1, R2>(p1: P1, p2: P2) -> impl Parser<'a, (R1, R2)>
+pub fn pair<'a, P1, P2, R1, R2>(p1: P1, p2: P2) -> impl Parser<'a, (R1, R2)>
 where
   P1: Parser<'a, R1>,
   P2: Parser<'a, R2>,
@@ -22,7 +22,7 @@ where
   }
 }
 
-fn map<'a, P, F, A, B>(p: P, f: F) -> impl Parser<'a, B>
+pub fn map<'a, P, F, A, B>(p: P, f: F) -> impl Parser<'a, B>
 where
   P: Parser<'a, A>,
   F: Fn(A) -> B,
@@ -30,7 +30,7 @@ where
   move |input: &'a str| p.parse(input).map(|(s1, r1)| (s1, f(r1)))
 }
 
-fn left<'a, P1, P2, R1, R2>(p1: P1, p2: P2) -> impl Parser<'a, R1>
+pub fn left<'a, P1, P2, R1, R2>(p1: P1, p2: P2) -> impl Parser<'a, R1>
 where
   P1: Parser<'a, R1>,
   P2: Parser<'a, R2>,
@@ -40,7 +40,7 @@ where
   // move |input| pair_fn.parse(input).map(|(s1, (r1, _))| (s1, r1))
 }
 
-fn right<'a, P1, P2, R1, R2>(p1: P1, p2: P2) -> impl Parser<'a, R2>
+pub fn right<'a, P1, P2, R1, R2>(p1: P1, p2: P2) -> impl Parser<'a, R2>
 where
   P1: Parser<'a, R1>,
   P2: Parser<'a, R2>,
@@ -50,7 +50,7 @@ where
   // move |input| pair_fn.parse(input).map(|(s1, (r1, _))| (s1, r1))
 }
 
-fn one_or_more<'a, P, A>(p: P) -> impl Parser<'a, Vec<A>>
+pub fn one_or_more<'a, P, A>(p: P) -> impl Parser<'a, Vec<A>>
 where
   P: Parser<'a, A>,
 {
@@ -71,7 +71,7 @@ where
   }
 }
 
-fn zero_or_more<'a, P, A>(p: P) -> impl Parser<'a, Vec<A>>
+pub fn zero_or_more<'a, P, A>(p: P) -> impl Parser<'a, Vec<A>>
 where P: Parser<'a, A>
 {
   move |mut input| {
