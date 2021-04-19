@@ -57,15 +57,41 @@ fn attributes<'a>() -> impl Parser<'a, Vec<(String, String)>> {
     zero_or_more(right(space1(), pair_attribute()))
 }
 
-fn element_start<'a>() -> impl Parser<'a, Vec<(String, String)>> {
-    right(match_literal("<"),right(identifier,attributes()))
+fn element_start<'a>() -> impl Parser<'a, (String, Vec<(String, String)>)> {
+    right(match_literal("<"),pair(identifier,attributes()))
+}
+
+#[derive(Debug, PartialEq)]
+struct Element{
+    name: String,
+    attributes: Vec<(String, String)>,
+    children: Vec<Element>
+}
+
+fn single_element<'a>() -> impl Parser<'a, Element> {
+    let func = left(element_start(), match_literal(" />"));
+    map(func, |(name, attributes)| Element{
+        name,
+        attributes,
+        children: vec![]
+    })
+}
+
+#[test]
+fn test_single_element() {
+    let func = single_element();
+    assert_eq!(Ok(("", Element{
+        name: "single-element".to_string(),
+        attributes: vec![("attribute".to_string(), "value".to_string())],
+         children: vec![],
+    })), func.parse("<single-element attribute=\"value\" />"));
 }
 
 #[test]
 fn test_element_start() {
     let es = element_start();
     let result = es.parse("<single-element attribute=\"value\" />");
-    println!("result is {:?}", result);
+    assert_eq!(Ok((" />", ("single-element".to_string(), vec![("attribute".to_string(), "value".to_string())]))), result);
 }
 
 #[test]
